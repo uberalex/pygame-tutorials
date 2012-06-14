@@ -1,4 +1,5 @@
 #this is the first example of the python game library tutorial.
+# http://inventwithpython.com/pygame/chapter2.html
 import sys, pygame
 from pygame.locals import *
 
