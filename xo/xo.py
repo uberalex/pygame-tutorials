@@ -26,7 +26,6 @@ def setPiece(number):
     else:
         return False
 
-#TODO: GOT HERE
 #if a row sums to zero or three, then someone won
 def addtriple(triple):
     try:
@@ -46,8 +45,13 @@ def checkWin():
 
 def endTurn():
     global currentPlayer # make sure we use the global variable
+    global board
+
     if checkWin():
-        print ('O','X')[currentPlayer], 'Wins!'
+        # 2 if O wins, 3 if X wins
+        currentPlayer = 2 + currentPlayer
+    elif board.count(None) == 0:
+        currentPlayer = 4
     else:
         currentPlayer = 1 if currentPlayer == 0 else 0
 
@@ -96,6 +100,15 @@ def drawPrompt(player):
     elif player == 0:
         textSurfaceObj = fontObj.render('O Player\'s Go', True, BLUE, WHITE)
 
+    elif player == 2:
+        textSurfaceObj = fontObj.render('O Player Wins!', True, WHITE, BLUE)
+   
+    elif player == 3:
+        textSurfaceObj = fontObj.render('X Player Wins!', True, WHITE, RED)
+
+    elif player == 4:
+        textSurfaceObj = fontObj.render('Noone wins :-(', True, WHITE, BLACK)
+
     textRectObj = textSurfaceObj.get_rect()
     textRectObj.center = (200, 25)
     DISPLAYSURF.blit(textSurfaceObj, textRectObj)
@@ -105,7 +118,7 @@ while True: # main game loop
         drawPieces()
         drawPrompt(currentPlayer)
         for event in pygame.event.get():
-            if event.type == KEYDOWN:
+            if (event.type == KEYDOWN and currentPlayer < 2):
                 pressed = pygame.key.name(event.key)
                 try:
                     #no board position 10 and can't pass
